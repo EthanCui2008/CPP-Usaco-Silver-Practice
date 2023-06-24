@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[100000];
+bool check(int wait, int n, int m, int c){
+	int truck = 1;
+	int ft = arr[0];
+	int fi = 0;
+	for(int i = 1; i < n; i++){
+		if( arr[i] - ft > wait || i + 1 - fi > c ){
+			truck += 1;
+			ft = arr[i];
+			fi = i;
+		}
+	}
+	return (truck <= m);
+}
+int bin(int l, int h, int n, int m, int c){
+    int mid = (l+h)/2;
+	if(l == h){
+	    return l;
+	}
+	if(l + 1 == h){
+		if(check(l,n,m,c)){
+		    return l;
+		}
+		return h;
+	}
+	if(check(mid,n,m,c)){
+	    return bin(l,mid,n,m,c);
+	}
+	else return bin(mid+1,h,n,m,c);
+}
+int main() {
+    int n,m,c;
+    cin >> n >> m >> c;
+    for(int i = 0; i < n; i++){
+        cin >> arr[i];
+    }
+    sort(arr, arr + n);
+    cout << bin(0, 1000000000,n,m,c);
+    return 0;
+}
